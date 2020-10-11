@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button BtnCalcular;
     private TextView TxtIdPromedio;
+    private String stringPromedio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +44,24 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void agregarPromedio(View view) {
+
+        obtenerDatos();
         abrirFormulario();
+
     }
+
         private void abrirFormulario(){
 
             Intent intent = new Intent(this, DisplayMessageActivity.class);
             intent.putExtra(EXTRA_MESSAGE, "Formulario de Actividades");
-
             startActivity(intent);
+
+        }
+
+        private void obtenerDatos(){
+
+            TxtIdPromedio=findViewById(R.id.TxtIdPromedio);
+            stringPromedio=TxtIdPromedio.getText().toString();
 
         }
 
@@ -147,9 +158,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-    //************************************************crud****************************************************
+    //************************************************crud Promedios****************************************************
 
     //guardado promedio
     public void agregar(ArrayList<Promedio> listadoPromedios,String nombre){

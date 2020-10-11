@@ -7,6 +7,7 @@ public class Promedio  implements Serializable  {
 
 
     public String idPonderado;
+    public String nombreEstudiante;
     private ArrayList<Corte> listCortes;
 
 
