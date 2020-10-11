@@ -10,6 +10,15 @@ public class Promedio  implements Serializable  {
     public String nombreEstudiante;
     private ArrayList<Corte> listCortes;
 
+    public Promedio() {
+
+    }
+
+    public Promedio(String idPonderado, String nombreEstudiante) {
+        this.idPonderado = idPonderado;
+        this.nombreEstudiante = nombreEstudiante;
+    }
+
     public String getNombreEstudiante() {
         return nombreEstudiante;
     }
@@ -51,23 +60,31 @@ public class Promedio  implements Serializable  {
 
         double corteUno=0,corteDos=0, corteTres=0;
 
-        for (Corte corte: listCortes) {
+        try {
 
-            if(corte.getCorte()=="1"){
+            for (Corte corte: listCortes) {
 
-               corteUno=corte.calcularPromedio() * 0.3 ;
+                if(corte.getCorte()=="1"){
 
-            }else if(corte.getCorte()=="2"){
+                    corteUno=corte.calcularPromedio() * 0.3 ;
 
-                corteDos=corte.calcularPromedio() * 0.3 ;
+                }else if(corte.getCorte()=="2"){
 
-            }else if(corte.getCorte()=="3"){
+                    corteDos=corte.calcularPromedio() * 0.3 ;
 
-                corteTres=corte.calcularPromedio() * 0.4 ;
+                }else if(corte.getCorte()=="3"){
+
+                    corteTres=corte.calcularPromedio() * 0.4 ;
+
+                }
 
             }
 
+        }catch (Exception e){
+            System.out.println("error al calcular");
+            corteUno=0; corteDos=0; corteTres=0;
         }
+
 
         return corteUno+corteDos+corteTres;
     }

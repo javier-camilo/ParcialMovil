@@ -7,12 +7,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.example.notas.Entity.Actividades;
 import com.example.notas.Entity.Corte;
 import com.example.notas.Entity.Materia;
 import com.example.notas.Entity.Promedio;
+import com.example.notas.Operaciones.ManejoArchivos;
+import com.google.android.material.tabs.TabLayout;
 
 
 import java.io.BufferedReader;
@@ -29,25 +32,33 @@ public class MainActivity extends AppCompatActivity {
 
 
     public static final String EXTRA_MESSAGE = "com.example.notas.MESSAGE" ;
-
     public static ArrayList<Promedio> listadoPromedios = new ArrayList<>();
+
 
     private Button BtnCalcular;
     private TextView TxtIdPromedio,TxtNombre;
+    private TableLayout tableLayout;
+
+
     private String stringPromedio,stringNombre;
+    private String[] header={"Id","Nombre ", "Promedio"};
+    private ArrayList<String[]> rows= new ArrayList<>();
+
+
+    private ManejoArchivos serviceArchivos= new ManejoArchivos();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mapearTabla();
     }
 
 
     public void agregarPromedio(View view) {
 
         obtenerDatos();
-        abrirFormulario();
-
     }
 
         private void abrirFormulario(){
@@ -69,11 +80,44 @@ public class MainActivity extends AppCompatActivity {
             TxtNombre=findViewById(R.id.TxtNombre);
             stringNombre=TxtNombre.getText().toString();
 
+            listadoPromedios.clear();
+
+            Promedio promedioNuevo=new Promedio(stringPromedio,stringNombre);
+
+            listadoPromedios = serviceArchivos.verPromedios("Promedios",getApplicationContext());
+
+            listadoPromedios.add(promedioNuevo);
+
+            serviceArchivos.agregar(listadoPromedios,"Promedios",getApplicationContext());
+
+
+
         }
 
-        private void crearClase(){
+
+
+        private void mapearTabla(){
+
+            tableLayout=(TableLayout) findViewById(R.id.tablaPromedios);
+            TableDynamic tableDynamic=new TableDynamic(tableLayout,getApplicationContext());
+            tableDynamic.addHeader(header);
+            tableDynamic.addData(getPromedios());
 
         }
+
+        private ArrayList<String[]> getPromedios() {
+
+
+            listadoPromedios = serviceArchivos.verPromedios("Promedios",getApplicationContext());
+
+            for (Promedio promedio:
+                 listadoPromedios) {
+                rows.add(new String[]{promedio.getIdPonderado(), promedio.getNombreEstudiante(), "0.0"});
+            }
+
+            return rows;
+        }
+
 
     private void calcular(){
 
@@ -214,11 +258,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //consulta promedio
-    public ArrayList<Actividades> ver(String nombre){
+    public ArrayList<Promedio> ver(String nombre){
         //lectura
 
         ObjectInputStream lector=null;
-        ArrayList<Actividades> listado=new ArrayList<>();
+        ArrayList<Promedio> listado=new ArrayList<>();
         File archivo;
 
         try {
@@ -230,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
 
             //obtencion del listado
 
-            listado=(ArrayList<Actividades>) lector.readObject();
+            listado=(ArrayList<Promedio>) lector.readObject();
 
         } catch (Exception e) {
 
