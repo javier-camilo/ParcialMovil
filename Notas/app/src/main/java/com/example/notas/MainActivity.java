@@ -106,14 +106,6 @@ public class MainActivity extends AppCompatActivity {
             TxtIdPromedio.setText("");
         }
 
-        private void abrirFormulario(){
-
-            Intent intent = new Intent(this, DisplayMessageActivity.class);
-            intent.putExtra(EXTRA_MESSAGE, "Formulario de Actividades");
-            startActivity(intent);
-
-        }
-
         private void obtenerDatos(){
 
             stringNombre = "";
@@ -179,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
             tableDynamic.addItems(item);
 
         }
+
 
 
         private void listMapear(){
