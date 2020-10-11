@@ -18,6 +18,8 @@ public class TableDynamic {
     private TextView txtCell;
     private int indexC;
     private int indexR;
+    private boolean multiColor=false;
+    int firtColor,secondColor;
 
 
     public TableDynamic(TableLayout tableLayout, Context context) {
@@ -75,8 +77,8 @@ public class TableDynamic {
             newRow();
             for (indexC=0;indexC<header.length;indexC++){
                 newCell();
-                String[] columns=data.get(indexR-1);
-                info=(indexC<columns.length)?columns[indexC]:"";
+                String[] row=data.get(indexR-1);
+                info=(indexC<row.length)?row[indexC]:"";
                 txtCell.setText(info);
                 tableRow.addView(txtCell,newTableRowParams());
             }
@@ -85,6 +87,7 @@ public class TableDynamic {
 
     }
 
+
     private TableRow.LayoutParams newTableRowParams(){
         TableRow.LayoutParams params = new TableRow.LayoutParams();
         params.setMargins(1,1,1,1);
@@ -92,7 +95,21 @@ public class TableDynamic {
         return  params;
     }
 
-    private void addItems(){
+    public void addItems(String[] item){
+        String info;
+        data.add(item);
+        indexC=0;
+        newRow();
+
+        while (indexC<header.length){
+            newCell();
+            info=(indexC<item.length)?item[indexC++]:"";
+            txtCell.setText(info);
+            tableRow.addView(txtCell,newTableRowParams());
+        }
+
+        tableLayout.addView(tableRow,data.size());
+
 
     }
 

@@ -3,8 +3,10 @@ package com.example.notas;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private Button BtnCalcular;
     private TextView TxtIdPromedio,TxtNombre;
     private TableLayout tableLayout;
+    private  TableDynamic tableDynamic;
 
 
     private String stringPromedio,stringNombre;
@@ -56,8 +59,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void agregarPromedio(View view) {
+    public void llenarCorte(View view){
 
+        stringNombre = "";
+        TxtNombre=findViewById(R.id.TxtNombre);
+        stringNombre=TxtNombre.getText().toString();
+
+        Intent intent = new Intent(this, DisplayMessageActivity.class);
+        intent.putExtra(EXTRA_MESSAGE, stringNombre);
+        DisplayMessageActivity.promedios=serviceArchivos.verPromedios("Promedios",getApplicationContext());
+        startActivity(intent);
+    }
+
+
+    public void agregarPromedio(View view) {
         obtenerDatos();
     }
 
@@ -90,19 +105,17 @@ public class MainActivity extends AppCompatActivity {
 
             serviceArchivos.agregar(listadoPromedios,"Promedios",getApplicationContext());
 
-
+            addItem();
 
         }
 
 
 
         private void mapearTabla(){
-
             tableLayout=(TableLayout) findViewById(R.id.tablaPromedios);
-            TableDynamic tableDynamic=new TableDynamic(tableLayout,getApplicationContext());
+            tableDynamic=new TableDynamic(tableLayout,getApplicationContext());
             tableDynamic.addHeader(header);
             tableDynamic.addData(getPromedios());
-
         }
 
         private ArrayList<String[]> getPromedios() {
@@ -112,11 +125,33 @@ public class MainActivity extends AppCompatActivity {
 
             for (Promedio promedio:
                  listadoPromedios) {
-                rows.add(new String[]{promedio.getIdPonderado(), promedio.getNombreEstudiante(), "0.0"});
+                rows.add(new String[]{promedio.getIdPonderado(), promedio.getNombreEstudiante(), ""+promedio.ponderado()});
             }
 
             return rows;
         }
+
+        private void addItem(){
+
+            String[] item=new String[]{};
+
+            listadoPromedios.clear();
+            listadoPromedios = serviceArchivos.verPromedios("Promedios",getApplicationContext());
+
+            for (Promedio promedio:
+                    listadoPromedios) {
+                 item = new String[]{promedio.getIdPonderado(), promedio.getNombreEstudiante(), ""+promedio.ponderado()};
+            }
+
+            tableDynamic.addItems(item);
+
+        }
+
+
+
+
+
+
 
 
     private void calcular(){
@@ -185,118 +220,9 @@ public class MainActivity extends AppCompatActivity {
         pro.setListCortes(cortes);
 
         Log.d("Filtro", ""+pro.ponderado());
-        
-
-    }
-
-    public  void Operacion(){
-
-        /*
-        TxtNumero = findViewById(R.id.TxtNumero);
-        TxtNumeroDos = findViewById(R.id.TxtNumeroDos);
-
-        double number = Double.parseDouble(TxtNumero.getText().toString());
-        double Dos = Double.parseDouble(TxtNumeroDos.getText().toString());
-
-        double calcular = 0;
-
-        calcular = number + Dos;
-
-
-        BtnCalcular = findViewById(R.id.BtnCalcular);
-
-
-         */
-
-    }
-
-
-
-    //************************************************crud Promedios****************************************************
-
-    //guardado promedio
-    public void agregar(ArrayList<Promedio> listadoPromedios,String nombre){
-
-        ObjectOutputStream escritor=null;
-
-        try {
-            File archivo= new File(getFilesDir()+""+nombre);
-            System.out.println(getFilesDir()+""+nombre);
-            //crear un archivo si no existe
-            if(!(archivo.exists())){
-                try {
-                    archivo.createNewFile();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            //escritura del archivo
-
-            FileOutputStream file=new FileOutputStream(archivo);
-            escritor= new ObjectOutputStream(file);
-            escritor.writeObject(listadoPromedios);
-
-           Log.d("avisos", "se creo correctamente");
-
-        } catch (IOException error) {
-
-            Log.d("avisos", "error al crear el archivo");
-
-        }finally{
-            try {
-                if(escritor!=null){
-                    escritor.close();
-                }
-            } catch (IOException error) {
-
-            }
-        }
 
 
     }
-
-    //consulta promedio
-    public ArrayList<Promedio> ver(String nombre){
-        //lectura
-
-        ObjectInputStream lector=null;
-        ArrayList<Promedio> listado=new ArrayList<>();
-        File archivo;
-
-        try {
-            //lectura del archivo binario
-
-            archivo=new File(getFilesDir()+""+nombre);
-            FileInputStream file=new FileInputStream(archivo);
-            lector=new ObjectInputStream(file);
-
-            //obtencion del listado
-
-            listado=(ArrayList<Promedio>) lector.readObject();
-
-        } catch (Exception e) {
-
-        }finally{
-            if(lector!=null){
-                try{
-                    lector.close();
-                }catch(IOException error){
-
-                }
-            }
-        }
-
-        return listado;
-    }
-
-    //eliminar
-    public void Eliminar(){
-
-    }
-
-
 
 
 
