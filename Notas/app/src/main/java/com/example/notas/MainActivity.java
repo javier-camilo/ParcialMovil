@@ -33,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<Promedio> listadoPromedios = new ArrayList<>();
 
     private Button BtnCalcular;
-    private TextView TxtIdPromedio;
-    private String stringPromedio;
+    private TextView TxtIdPromedio,TxtNombre;
+    private String stringPromedio,stringNombre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +60,20 @@ public class MainActivity extends AppCompatActivity {
 
         private void obtenerDatos(){
 
+            stringNombre = "";
+            stringPromedio="";
+
             TxtIdPromedio=findViewById(R.id.TxtIdPromedio);
             stringPromedio=TxtIdPromedio.getText().toString();
 
+            TxtNombre=findViewById(R.id.TxtNombre);
+            stringNombre=TxtNombre.getText().toString();
+
         }
 
+        private void crearClase(){
+
+        }
 
     private void calcular(){
 
@@ -156,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
          */
 
     }
+
 
 
     //************************************************crud Promedios****************************************************
