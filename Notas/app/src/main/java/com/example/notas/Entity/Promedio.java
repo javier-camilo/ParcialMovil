@@ -10,6 +10,13 @@ public class Promedio  implements Serializable  {
     public String nombreEstudiante;
     private ArrayList<Corte> listCortes;
 
+    public String getNombreEstudiante() {
+        return nombreEstudiante;
+    }
+
+    public void setNombreEstudiante(String nombreEstudiante) {
+        this.nombreEstudiante = nombreEstudiante;
+    }
 
     public ArrayList<Corte> getListCortes() {
         return listCortes;
