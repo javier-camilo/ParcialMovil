@@ -1,8 +1,9 @@
 package com.example.notas.Entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Materia {
+public class Materia implements Serializable  {
 
     private String idMateria;
     private String nombreMateria;

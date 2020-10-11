@@ -1,8 +1,9 @@
 package com.example.notas.Entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Promedio {
+public class Promedio  implements Serializable  {
 
 
     public String idPonderado;

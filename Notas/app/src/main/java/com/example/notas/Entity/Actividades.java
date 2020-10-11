@@ -1,6 +1,8 @@
 package com.example.notas.Entity;
 
-public class Actividades {
+import java.io.Serializable;
+
+public class Actividades implements Serializable {
 
     private String actividad;
     private double porcentaje;

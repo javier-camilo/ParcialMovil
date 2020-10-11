@@ -15,38 +15,45 @@ import com.example.notas.Entity.Materia;
 import com.example.notas.Entity.Promedio;
 
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String EXTRA_MESSAGE = "com.example.notas.MESSAGE" ;
-    public static  String mostrarAca = "Listo" ;
 
+    public static final String EXTRA_MESSAGE = "com.example.notas.MESSAGE" ;
+
+    public static ArrayList<Promedio> listadoPromedios = new ArrayList<>();
 
     private Button BtnCalcular;
-    private TextView TxtNumero, TxtNumeroDos, LabelResultado;
+    private TextView TxtIdPromedio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        System.out.println("juego");
     }
 
 
-    public void obtenerValores(View view) {
+    public void agregarPromedio(View view) {
+        abrirFormulario();
+    }
+        private void abrirFormulario(){
 
             Intent intent = new Intent(this, DisplayMessageActivity.class);
-            intent.putExtra(EXTRA_MESSAGE, "Moviendose");
-
-            Actividades act=new Actividades("asd",40,3.5);
-
-            DisplayMessageActivity.actividad=act;
+            intent.putExtra(EXTRA_MESSAGE, "Formulario de Actividades");
 
             startActivity(intent);
 
-    }
+        }
+
 
     private void calcular(){
 
@@ -119,6 +126,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public  void Operacion(){
+
+        /*
         TxtNumero = findViewById(R.id.TxtNumero);
         TxtNumeroDos = findViewById(R.id.TxtNumeroDos);
 
@@ -132,7 +141,99 @@ public class MainActivity extends AppCompatActivity {
 
         BtnCalcular = findViewById(R.id.BtnCalcular);
 
+
+         */
+
     }
+
+
+
+
+    //************************************************crud****************************************************
+
+    //guardado promedio
+    public void agregar(ArrayList<Promedio> listadoPromedios,String nombre){
+
+        ObjectOutputStream escritor=null;
+
+        try {
+            File archivo= new File(getFilesDir()+""+nombre);
+            System.out.println(getFilesDir()+""+nombre);
+            //crear un archivo si no existe
+            if(!(archivo.exists())){
+                try {
+                    archivo.createNewFile();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            //escritura del archivo
+
+            FileOutputStream file=new FileOutputStream(archivo);
+            escritor= new ObjectOutputStream(file);
+            escritor.writeObject(listadoPromedios);
+
+           Log.d("avisos", "se creo correctamente");
+
+        } catch (IOException error) {
+
+            Log.d("avisos", "error al crear el archivo");
+
+        }finally{
+            try {
+                if(escritor!=null){
+                    escritor.close();
+                }
+            } catch (IOException error) {
+
+            }
+        }
+
+
+    }
+
+    //consulta promedio
+    public ArrayList<Actividades> ver(String nombre){
+        //lectura
+
+        ObjectInputStream lector=null;
+        ArrayList<Actividades> listado=new ArrayList<>();
+        File archivo;
+
+        try {
+            //lectura del archivo binario
+
+            archivo=new File(getFilesDir()+""+nombre);
+            FileInputStream file=new FileInputStream(archivo);
+            lector=new ObjectInputStream(file);
+
+            //obtencion del listado
+
+            listado=(ArrayList<Actividades>) lector.readObject();
+
+        } catch (Exception e) {
+
+        }finally{
+            if(lector!=null){
+                try{
+                    lector.close();
+                }catch(IOException error){
+
+                }
+            }
+        }
+
+        return listado;
+    }
+
+    //eliminar
+    public void Eliminar(){
+
+    }
+
+
 
 
 

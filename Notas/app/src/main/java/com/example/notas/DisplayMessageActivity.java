@@ -8,10 +8,11 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.notas.Entity.Actividades;
+import com.example.notas.Entity.Promedio;
 
 public class DisplayMessageActivity extends AppCompatActivity {
 
-    public static Actividades actividad=new Actividades();
+    public static Promedio promedio =new Promedio();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,18 +27,11 @@ public class DisplayMessageActivity extends AppCompatActivity {
 
     public void obteniendoDatos(){
 
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-
-        TextView  TxtMessage=  findViewById(R.id.TxtMensaje);
-
-        TxtMessage.setText(actividad.getActividad());
 
     }
 
     public void mandar(View view){
 
-        MainActivity.mostrarAca="pasando de hijo a padre";
 
     }
 

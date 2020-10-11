@@ -2,9 +2,10 @@ package com.example.notas.Entity;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Corte {
+public class Corte implements Serializable {
 
 
     private ArrayList<Materia> listadoMateria;
