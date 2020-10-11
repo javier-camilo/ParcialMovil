@@ -49,7 +49,7 @@ public class Corte {
         return materiaObtenida;
     }
 
-    public double CalcularPromedio(){
+    public double calcularPromedio(){
 
         double sumador=0,contador=0;
 

@@ -37,6 +37,31 @@ public class Promedio {
         return corteObtenido;
 
     }
+
+    public double ponderado(){
+
+        double corteUno=0,corteDos=0, corteTres=0;
+
+        for (Corte corte: listCortes) {
+
+            if(corte.getCorte()=="1"){
+
+               corteUno=corte.calcularPromedio() * 0.3 ;
+
+            }else if(corte.getCorte()=="2"){
+
+                corteDos=corte.calcularPromedio() * 0.3 ;
+
+            }else if(corte.getCorte()=="3"){
+
+                corteTres=corte.calcularPromedio() * 0.4 ;
+
+            }
+
+        }
+
+        return corteUno+corteDos+corteTres;
+    }
     
 
 }

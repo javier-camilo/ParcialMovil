@@ -3,10 +3,12 @@ package com.example.notas;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.notas.Entity.Actividades;
 import com.example.notas.Entity.Corte;
 import com.example.notas.Entity.Materia;
+import com.example.notas.Entity.Promedio;
 
 import java.util.ArrayList;
 
@@ -71,9 +73,21 @@ public class MainActivity extends AppCompatActivity {
 
         Corte corte = new Corte();
 
+        corte.setCorte("1");
         corte.setListadoMateria(materiasList);
 
-        System.out.println(corte.CalcularPromedio());
+
+        Log.d("Filtro", ""+corte.calcularPromedio());
+
+        ArrayList<Corte> cortes = new ArrayList<>();
+
+        cortes.add(corte);
+
+        Promedio pro=new Promedio();
+
+        pro.setListCortes(cortes);
+
+        Log.d("Filtro", ""+pro.ponderado());
         
 
     }
