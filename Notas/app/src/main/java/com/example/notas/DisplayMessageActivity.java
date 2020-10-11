@@ -50,6 +50,7 @@ public class DisplayMessageActivity extends AppCompatActivity {
     public void mandar(View view){
 
 
+
     }
 
 

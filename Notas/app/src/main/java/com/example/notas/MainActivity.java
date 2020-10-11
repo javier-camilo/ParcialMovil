@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -47,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
     private String[] header={"Id","Nombre ", "Promedio"};
     private ArrayList<String[]> rows= new ArrayList<>();
 
+    private ListView listview;
+    private ArrayList<String> names;
+
 
     private ManejoArchivos serviceArchivos= new ManejoArchivos();
 
@@ -55,7 +60,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mapearTabla();
+
+        listadoPromedios = serviceArchivos.verPromedios("Promedios",getApplicationContext());
+
+        for (Promedio promedio:listadoPromedios) System.out.println(promedio.getNombreEstudiante());
+
+        listMapear();
+
     }
 
 
@@ -73,8 +84,27 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void agregarPromedio(View view) {
-        obtenerDatos();
+
+        stringNombre ="";
+        stringPromedio="";
+
+        TxtIdPromedio=findViewById(R.id.TxtIdPromedio);
+        stringPromedio=TxtIdPromedio.getText().toString().trim();
+
+        TxtNombre=findViewById(R.id.TxtNombre);
+        stringNombre=TxtNombre.getText().toString().trim();
+
+        if(stringNombre.equals("") || stringPromedio.equals("")){
+        }else{
+            obtenerDatos();
+            limpiar();
+        }
     }
+
+        private  void limpiar(){
+            TxtNombre.setText("");
+            TxtIdPromedio.setText("");
+        }
 
         private void abrirFormulario(){
 
@@ -105,21 +135,24 @@ public class MainActivity extends AppCompatActivity {
 
             serviceArchivos.agregar(listadoPromedios,"Promedios",getApplicationContext());
 
-            addItem();
+            listMapear();
 
         }
 
 
 
         private void mapearTabla(){
-            tableLayout=(TableLayout) findViewById(R.id.tablaPromedios);
-            tableDynamic=new TableDynamic(tableLayout,getApplicationContext());
-            tableDynamic.addHeader(header);
-            tableDynamic.addData(getPromedios());
+
+                /*
+                    tableLayout=(TableLayout) findViewById(R.id.tablaPromedios);
+                    tableDynamic=new TableDynamic(tableLayout,getApplicationContext());
+                    tableDynamic.addHeader(header);
+                    tableDynamic.addData(getPromedios());
+
+                 */
         }
 
         private ArrayList<String[]> getPromedios() {
-
 
             listadoPromedios = serviceArchivos.verPromedios("Promedios",getApplicationContext());
 
@@ -148,9 +181,31 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        private void listMapear(){
+
+            listview = (ListView) findViewById(R.id.listview);
+            names = new ArrayList<String>();
+
+            listadoPromedios = serviceArchivos.verPromedios("Promedios",getApplicationContext());
+
+            for (Promedio promedio:
+                    listadoPromedios) {
+                names.add("ID: "+promedio.getIdPonderado()+" Nombre: "+promedio.getNombreEstudiante()+"  Nota: "+promedio.ponderado());
+            }
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, names);
+            listview.setAdapter(adapter);
 
 
+        }
 
+
+    public void borrarTodo(View view){
+            listadoPromedios = serviceArchivos.verPromedios("Promedios",getApplicationContext());
+            listadoPromedios.clear();
+            serviceArchivos.agregar(listadoPromedios,"Promedios",getApplicationContext());
+            listMapear();
+        }
 
 
 

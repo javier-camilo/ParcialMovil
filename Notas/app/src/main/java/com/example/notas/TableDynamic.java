@@ -73,7 +73,7 @@ public class TableDynamic {
 
         String info;
 
-        for (indexR=1;indexR<=header.length;indexR++){
+        for (indexR=0;indexR<=header.length;indexR++){
             newRow();
             for (indexC=0;indexC<header.length;indexC++){
                 newCell();
