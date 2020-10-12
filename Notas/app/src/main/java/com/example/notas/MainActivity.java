@@ -265,6 +265,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void Modificar(View view){
+
+        int pos=buscar()-1;
+
+        listadoPromedios.clear();
+
+        listadoPromedios = serviceArchivos.verPromedios("Promedios",getApplicationContext());
+
+
+        stringNombre = "";
+        stringPromedio="";
+
+        TxtIdPromedio=findViewById(R.id.TxtIdPromedio);
+        stringPromedio=TxtIdPromedio.getText().toString();
+
+        TxtNombre=findViewById(R.id.TxtNombre);
+        stringNombre=TxtNombre.getText().toString();
+
+        listadoPromedios.get(pos).setNombreEstudiante(stringNombre);
+        listadoPromedios.get(pos).setIdPonderado(stringPromedio);
+
+        serviceArchivos.agregar(listadoPromedios,"Promedios",getApplicationContext());
+
+        listMapear();
+
+    }
+
+
 
 
 
