@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -62,6 +63,8 @@ public class DisplayMessageActivity extends AppCompatActivity {
         for (Promedio pro: promedios){
             System.out.println(pro.getNombreEstudiante());
         }
+
+        calcular();
 
 
     }
@@ -214,6 +217,78 @@ public class DisplayMessageActivity extends AppCompatActivity {
     }
 
     public void mandar(View view){
+
+    }
+
+
+    private void calcular(){
+
+        ArrayList<Actividades> actividadesList=new ArrayList<>();
+
+        Actividades actividad= new Actividades("Quiz",40,3.6);
+        Actividades actividads= new Actividades("Parcial",60,4.0);
+
+
+
+        actividadesList.add(actividad);
+        actividadesList.add(actividads);
+
+
+
+        Materia materias = new Materia();
+
+
+
+        materias.setActividadesCorte(actividadesList);
+
+
+        Log.d("Prueba","definitiva de la materia: "+materias.calcularDefinitiva());
+
+
+        Actividades A2Materiados= new Actividades("ads",30,4.0);
+        Actividades A1Materiados= new Actividades("ads",60,5.0);
+        Actividades A3Materiados= new Actividades("quiz",10,2.5);
+
+
+
+        actividadesList=new ArrayList<>();
+
+        actividadesList.add(A2Materiados);
+        actividadesList.add(A1Materiados);
+        actividadesList.add(A3Materiados);
+
+        Materia materiados = new Materia();
+
+
+        materiados.setActividadesCorte(actividadesList);
+
+
+        Log.d("Prueba","definitiva de la materia: "+materiados.calcularDefinitiva());
+
+
+        ArrayList<Materia> materiasList=new ArrayList<>();
+
+        materiasList.add(materias);
+        materiasList.add(materiados);
+
+        Corte corte = new Corte();
+
+        corte.setCorte("1");
+        corte.setListadoMateria(materiasList);
+
+
+        Log.d("Prueba", ""+corte.calcularPromedio());
+
+        ArrayList<Corte> cortes = new ArrayList<>();
+
+        cortes.add(corte);
+
+        Promedio pro=new Promedio();
+
+        pro.setListCortes(cortes);
+
+        Log.d("Prueba", " corteUno: "+corte.calcularPromedio()+" corte dos: 0"+" Corte tres: 0"+" Definitiva: "+pro.ponderado());
+
 
     }
 

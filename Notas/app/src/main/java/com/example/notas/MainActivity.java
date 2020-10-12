@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -67,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
 
         listMapear();
 
-        calcular();
 
     }
 
@@ -128,14 +128,28 @@ public class MainActivity extends AppCompatActivity {
 
             listadoPromedios = serviceArchivos.verPromedios("Promedios",getApplicationContext());
 
-            listadoPromedios.add(promedioNuevo);
+            int encontrado=0;
 
-            serviceArchivos.agregar(listadoPromedios,"Promedios",getApplicationContext());
+            for ( Promedio p:listadoPromedios) {
+                if(p.getIdPonderado().equals(stringPromedio)){
+                    encontrado=1;
+                }
+            }
 
-            listMapear();
+            if(encontrado==1){
 
+                Log.d("Prueba", "ya se encuentra registrado");
+
+            }else{
+
+                listadoPromedios.add(promedioNuevo);
+
+                serviceArchivos.agregar(listadoPromedios,"Promedios",getApplicationContext());
+
+                listMapear();
+
+            }
         }
-
 
 
         private void mapearTabla(){
@@ -178,7 +192,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
         private void listMapear(){
 
             listview = (ListView) findViewById(R.id.listview);
@@ -205,78 +218,54 @@ public class MainActivity extends AppCompatActivity {
             listMapear();
         }
 
-
-
-    private void calcular(){
-
-        ArrayList<Actividades> actividadesList=new ArrayList<>();
-
-        Actividades actividad= new Actividades("Quiz",40,3.6);
-        Actividades actividads= new Actividades("Parcial",60,4.0);
+    public void BorraUno(View view) {
 
 
 
-        actividadesList.add(actividad);
-        actividadesList.add(actividads);
+        stringPromedio="";
 
+        TxtIdPromedio=findViewById(R.id.TxtIdPromedio);
+        stringPromedio=TxtIdPromedio.getText().toString();
 
+        if(stringPromedio.equals("")){
+            Log.d("Prueba","debe digitar la id a eliminar");
+        }else{
 
-        Materia materias = new Materia();
+            listadoPromedios.clear();
+            listadoPromedios = serviceArchivos.verPromedios("Promedios",getApplicationContext());
 
+            int lugar = buscar() - 1;
 
+            listadoPromedios.remove(lugar);
+            serviceArchivos.agregar(listadoPromedios, "Promedios",getApplicationContext());
 
-        materias.setActividadesCorte(actividadesList);
-
-
-        Log.d("Prueba","definitiva de la materia: "+materias.getDefinitivaMateria());
-
-
-        Actividades A2Materiados= new Actividades("ads",30,4.0);
-        Actividades A1Materiados= new Actividades("ads",60,5.0);
-        Actividades A3Materiados= new Actividades("quiz",10,2.5);
-
-
-
-        actividadesList=new ArrayList<>();
-
-        actividadesList.add(A2Materiados);
-        actividadesList.add(A1Materiados);
-        actividadesList.add(A3Materiados);
-
-        Materia materiados = new Materia();
-
-
-        materiados.setActividadesCorte(actividadesList);
-
-
-        Log.d("Prueba","definitiva de la materia: "+materiados.getDefinitivaMateria());
-
-
-        ArrayList<Materia> materiasList=new ArrayList<>();
-
-        materiasList.add(materias);
-        materiasList.add(materiados);
-
-        Corte corte = new Corte();
-
-        corte.setCorte("1");
-        corte.setListadoMateria(materiasList);
-
-
-        Log.d("Prueba", ""+corte.calcularPromedio());
-
-        ArrayList<Corte> cortes = new ArrayList<>();
-
-        cortes.add(corte);
-
-        Promedio pro=new Promedio();
-
-        pro.setListCortes(cortes);
-
-        Log.d("Prueba", ""+pro.ponderado());
-
+            listMapear();
+        }
 
     }
+
+    private int buscar(){
+
+        stringPromedio="";
+
+        TxtIdPromedio=findViewById(R.id.TxtIdPromedio);
+        stringPromedio=TxtIdPromedio.getText().toString();
+
+        int index=0;
+
+        for (Promedio pro:listadoPromedios){
+
+            index++;
+
+            if(pro.getIdPonderado().equals(stringPromedio)){
+                return index;
+            }
+        }
+        return 0;
+    }
+
+
+
 
 
 
