@@ -7,8 +7,17 @@ public class Materia implements Serializable  {
 
     private String idMateria;
     private String nombreMateria;
+    private String corteMateria;
     private ArrayList<Actividades> actividadesCorte;
     private double definitivaMateria;
+
+    public String getCorteMateria() {
+        return corteMateria;
+    }
+
+    public void setCorteMateria(String corteMateria) {
+        this.corteMateria = corteMateria;
+    }
 
     public String getIdMateria() {
         return idMateria;

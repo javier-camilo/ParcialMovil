@@ -67,19 +67,24 @@ public class MainActivity extends AppCompatActivity {
 
         listMapear();
 
+        calcular();
+
     }
 
 
     public void llenarCorte(View view){
 
-        stringNombre = "";
-        TxtNombre=findViewById(R.id.TxtNombre);
-        stringNombre=TxtNombre.getText().toString();
+        stringPromedio="";
+
+        TxtIdPromedio=findViewById(R.id.TxtIdPromedio);
+
+        stringPromedio=TxtIdPromedio.getText().toString();
 
         Intent intent = new Intent(this, DisplayMessageActivity.class);
-        intent.putExtra(EXTRA_MESSAGE, stringNombre);
+        intent.putExtra(EXTRA_MESSAGE, stringPromedio);
         DisplayMessageActivity.promedios=serviceArchivos.verPromedios("Promedios",getApplicationContext());
         startActivity(intent);
+
     }
 
 
@@ -211,9 +216,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
         actividadesList.add(actividad);
         actividadesList.add(actividads);
+
+
 
         Materia materias = new Materia();
 
@@ -222,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
         materias.setActividadesCorte(actividadesList);
 
 
-        System.out.println(materias.calcularDefinitiva());
+        Log.d("Prueba","definitiva de la materia: "+materias.getDefinitivaMateria());
 
 
         Actividades A2Materiados= new Actividades("ads",30,4.0);
@@ -243,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
         materiados.setActividadesCorte(actividadesList);
 
 
-        System.out.println(materiados.calcularDefinitiva());
+        Log.d("Prueba","definitiva de la materia: "+materiados.getDefinitivaMateria());
 
 
         ArrayList<Materia> materiasList=new ArrayList<>();
@@ -257,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
         corte.setListadoMateria(materiasList);
 
 
-        Log.d("Filtro", ""+corte.calcularPromedio());
+        Log.d("Prueba", ""+corte.calcularPromedio());
 
         ArrayList<Corte> cortes = new ArrayList<>();
 
@@ -267,10 +273,11 @@ public class MainActivity extends AppCompatActivity {
 
         pro.setListCortes(cortes);
 
-        Log.d("Filtro", ""+pro.ponderado());
+        Log.d("Prueba", ""+pro.ponderado());
 
 
     }
+
 
 
 
